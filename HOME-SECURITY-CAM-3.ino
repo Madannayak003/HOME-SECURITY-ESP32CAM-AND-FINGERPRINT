@@ -1,27 +1,24 @@
 // ======================================================
 // ESP32-CAM + R307 Fingerprint Home Security System
-// Captures image on fingerprint match and sends {name, image(base64)} to Google Apps Script
-// Flash LED lights up while capturing
 // ======================================================
 
 #include <WiFi.h>
-#include <WiFiClientSecure.h>   // ✅ Added for HTTPS
+#include <WiFiClientSecure.h>   
 #include <HTTPClient.h>
 #include "esp_camera.h"
 #include <Adafruit_Fingerprint.h>
 #include <mbedtls/base64.h>
 
 // -------- USER CONFIG ----------
-const char* ssid = "GalaxyA13";
-const char* password = "1234567890";
-//const char* scriptURL = "https://script.google.com/macros/s/AKfycbzW85xKRB2HUSrOT4jmxr93Htrq7RESewUs9-PhHJJCfIil7SMmz_Eom3BTPW5ZwKm8/exec";
-const char* scriptURL = "https://script.google.com/macros/s/AKfycbw7lyqseoajDNNjuBDTiaWjJzlhl0Mkj9KMSiT1vu-GbW4aDjC9DLAeGN53EwcE48tf/exec";
+const char* ssid = "*****";
+const char* password = "*********";
+const char* scriptURL = "https://script.google.com/macros/s/*****************************************/exec"
 // -------------------------------
 
 // Member map (IDs must match the templates enrolled in your R307)
 struct Member { uint8_t id; const char* name; };
 Member members[] = {
-  {1, "Madan"},
+  {1, "Me"},
   {2, "Mom"},
   {3, "Dad"},
   {4, "Sister"},
@@ -32,7 +29,7 @@ const int totalMembers = sizeof(members) / sizeof(Member);
 // LED pins
 #define FP_LED 14   // fingerprint match indicator (green)
 #define MSG_LED 2   // message sent indicator (blue)
-#define FLASH_LED 4 // ✅ Built-in flash LED pin (GPIO4)
+#define FLASH_LED 4 //  Built-in flash LED pin (GPIO4)
 
 // R307 on Serial1: RX=13 (to module TX), TX=15 (to module RX)
 HardwareSerial FingerSerial(1);
@@ -99,7 +96,7 @@ bool initCamera() {
 }
 
 // -------- Capture and Base64 encode ----------
-// ✅ Includes flash activation
+//  Includes flash activation
 bool captureImageBase64(String &outBase64) {
   // Turn flash ON before capture
   digitalWrite(FLASH_LED, HIGH);
@@ -198,7 +195,7 @@ void setup() {
 
   pinMode(FP_LED, OUTPUT);
   pinMode(MSG_LED, OUTPUT);
-  pinMode(FLASH_LED, OUTPUT);  // ✅ Initialize flash LED pin
+  pinMode(FLASH_LED, OUTPUT);  // Initialize flash LED pin
   digitalWrite(FP_LED, LOW);
   digitalWrite(MSG_LED, LOW);
   digitalWrite(FLASH_LED, LOW);
